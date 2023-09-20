@@ -1,0 +1,76 @@
+﻿@*使用 @{ }進行Razor語法的撰寫*@
+@{
+    // 設定網頁標題
+    ViewBag.Title = "會員登入";
+}
+
+<!-- 引入 jQuery 函式庫 -->
+<!-- jQuery：用於簡化HTML與JavaScript之間的互動 -->
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+
+
+<br />
+
+<h1>會員登入</h1>
+
+
+<!-- 登入表單開始 -->
+@* action="@Url.Action("Login")" 產生一個指向 Controller 中名為 Login 動作的 Url，提交表單後，這些數據會送到 Controller/Login 做處理 *@
+<!-- method="post" 提交表單數據的 HTTP 方法為 POST，POST方法通常用於提交要被處理的數據，例如用於創建或更新資源 -->
+<form action="@Url.Action("Login")" method="post">
+    <div class="form-horizontal">
+        <hr />
+
+        <!-- 帳號輸入區塊 -->
+        <!-- <div> 標籤、Bootstrap 的 form-group 類別，為表單元素提供結構和間距 -->
+        <div class="form-group">
+            <label for="fUserID" class="control-label col-md-2" style="font-size: 18px">帳號</label>
+            <div class="col-md-10">
+                <!-- 帳號輸入框 -->
+                <!-- type="text" 指定為文字輸入框 -->
+                <!-- id、name 屬性用於後端辨別此輸入框，required="required" 確保提交表單前必須填寫此輸入框 -->
+                <!-- class="form-control" 是 Bootstrap 的類別，賦予輸入框一個基本樣式 -->
+                <input type="text" id="fUserID" name="fUserID" required="required" class="form-control" style="font-size: 16px;" />
+            </div>
+        </div>
+
+        <br />
+
+        <div class="form-group">
+            <label for="fPwd" class="control-label col-md-2" style="font-size: 18px">密碼</label>
+            <div class="col-md-10">
+                <input type="password" id="fPwd" name="fPwd" required="required" class="form-control" style="font-size: 16px;" />
+            </div>
+        </div>
+
+        <br />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <!-- 登入按鈕 -->
+                <!-- type="submit" 點擊時，表單將被提交 -->
+                <!-- class="btn btn-pink" 賦予按鈕基本的 Bootstrap 樣式及自定義的 btn-pink 樣式 -->
+                <button type="submit" class="btn btn-pink">登入</button>
+                <!-- 訊息顯示位置 -->
+                @ViewBag.Message
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- 自定義樣式區塊開始 -->
+<style>
+    /* 自定義粉紅色按鈕樣式 */
+    .btn-pink {
+        color: #fff;
+        background-color: #f59dc9;
+        border-color: #f59dc9;
+    }
+
+        /* 定義粉紅色按鈕在滑鼠滑過時的樣式 */
+        .btn-pink:hover {
+            color: #fff;
+            background-color: #f590c3;
+            border-color: #f590c3;
+        }
+</style>

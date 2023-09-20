@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "HomePage";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+}
+
+<br />
+
+<h2>首頁</h2>
+
+<br />
+
+<h3>@Session["Welcome"]</h3>
+
+<br />
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <a href="@Url.Action("Record", "Exercise")" class="btn btn-orange btn-lg">Exercise</a>
+    </div>
+</div>
+
+<style>
+
+    .btn-orange {
+        color: #fff;
+        background-color: #fac68e;
+        border-color: #fac68e;
+    }
+
+        .btn-orange:hover {
+            color: #fff;
+            background-color: #f7b977;
+            border-color: #f7b977;
+        }
+</style>

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<prjPROJECT.Models.tMember>
+
+@{
+    ViewBag.Title = "帳戶";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+}
+
+<br />
+
+<h1>帳戶</h1>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.fMem_UserID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fMem_Pwd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fMem_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fMem_Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fMem_Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fMem_Birthday)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.fMem_UserID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fMem_Pwd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fMem_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fMem_Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fMem_Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fMem_Birthday)
+        </td>
+    </tr>
+}
+
+</table>

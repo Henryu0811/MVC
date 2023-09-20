@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbDATABASEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="tExercise">
+    <Key>
+      <PropertyRef Name="fID" />
+    </Key>
+    <Property Name="fID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fEX_DATE" Type="char" MaxLength="8" />
+    <Property Name="fEX_TYPE" Type="varchar" MaxLength="10" />
+    <Property Name="fEX_MUSCLE" Type="varchar" MaxLength="50" />
+    <Property Name="fEX_METHOD" Type="varchar" MaxLength="50" />
+    <Property Name="fEX_TIMES" Type="int" />
+    <Property Name="fEX_KG" Type="decimal" Precision="4" Scale="1" />
+    <Property Name="fEX_SETS" Type="int" />
+    <Property Name="fEX_UserID" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tISTXN">
+    <Key>
+      <PropertyRef Name="fID" />
+    </Key>
+    <Property Name="fID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fTXN_DATE" Type="char" MaxLength="8" />
+    <Property Name="fTXN_TYPE" Type="varchar" MaxLength="10" />
+    <Property Name="fTXN_DESC" Type="varchar" MaxLength="100" />
+    <Property Name="fTXN_AMT" Type="decimal" Precision="6" Scale="1" />
+    <Property Name="fTXN_OPTION" Type="varchar" MaxLength="10" />
+    <Property Name="fTXN_UserID" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tMember">
+    <Key>
+      <PropertyRef Name="fID" />
+    </Key>
+    <Property Name="fID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fMem_UserID" Type="nvarchar" MaxLength="50" />
+    <Property Name="fMem_Pwd" Type="nvarchar" MaxLength="50" />
+    <Property Name="fMem_Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="fMem_Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="fMem_Gender" Type="nvarchar" MaxLength="10" />
+    <Property Name="fMem_Birthday" Type="char" MaxLength="8" />
+  </EntityType>
+  <EntityContainer Name="dbDATABASEModelStoreContainer">
+    <EntitySet Name="tExercise" EntityType="Self.tExercise" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tISTXN" EntityType="Self.tISTXN" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tMember" EntityType="Self.tMember" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

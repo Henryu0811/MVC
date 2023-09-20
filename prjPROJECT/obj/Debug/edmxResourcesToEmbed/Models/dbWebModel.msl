@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="dbDATABASEModelStoreContainer" CdmEntityContainer="dbDATABASEEntities">
+    <EntitySetMapping Name="tExercise">
+      <EntityTypeMapping TypeName="dbDATABASEModel.tExercise">
+        <MappingFragment StoreEntitySet="tExercise">
+          <ScalarProperty Name="fID" ColumnName="fID" />
+          <ScalarProperty Name="fEX_DATE" ColumnName="fEX_DATE" />
+          <ScalarProperty Name="fEX_TYPE" ColumnName="fEX_TYPE" />
+          <ScalarProperty Name="fEX_MUSCLE" ColumnName="fEX_MUSCLE" />
+          <ScalarProperty Name="fEX_METHOD" ColumnName="fEX_METHOD" />
+          <ScalarProperty Name="fEX_TIMES" ColumnName="fEX_TIMES" />
+          <ScalarProperty Name="fEX_KG" ColumnName="fEX_KG" />
+          <ScalarProperty Name="fEX_SETS" ColumnName="fEX_SETS" />
+          <ScalarProperty Name="fEX_UserID" ColumnName="fEX_UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tISTXN">
+      <EntityTypeMapping TypeName="dbDATABASEModel.tISTXN">
+        <MappingFragment StoreEntitySet="tISTXN">
+          <ScalarProperty Name="fID" ColumnName="fID" />
+          <ScalarProperty Name="fTXN_DATE" ColumnName="fTXN_DATE" />
+          <ScalarProperty Name="fTXN_TYPE" ColumnName="fTXN_TYPE" />
+          <ScalarProperty Name="fTXN_DESC" ColumnName="fTXN_DESC" />
+          <ScalarProperty Name="fTXN_AMT" ColumnName="fTXN_AMT" />
+          <ScalarProperty Name="fTXN_OPTION" ColumnName="fTXN_OPTION" />
+          <ScalarProperty Name="fTXN_UserID" ColumnName="fTXN_UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tMember">
+      <EntityTypeMapping TypeName="dbDATABASEModel.tMember">
+        <MappingFragment StoreEntitySet="tMember">
+          <ScalarProperty Name="fID" ColumnName="fID" />
+          <ScalarProperty Name="fMem_UserID" ColumnName="fMem_UserID" />
+          <ScalarProperty Name="fMem_Pwd" ColumnName="fMem_Pwd" />
+          <ScalarProperty Name="fMem_Name" ColumnName="fMem_Name" />
+          <ScalarProperty Name="fMem_Email" ColumnName="fMem_Email" />
+          <ScalarProperty Name="fMem_Gender" ColumnName="fMem_Gender" />
+          <ScalarProperty Name="fMem_Birthday" ColumnName="fMem_Birthday" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

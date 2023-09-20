@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbDATABASEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="tExercise">
+    <Key>
+      <PropertyRef Name="fID" />
+    </Key>
+    <Property Name="fID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fEX_DATE" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+    <Property Name="fEX_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="fEX_MUSCLE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fEX_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fEX_TIMES" Type="Int32" />
+    <Property Name="fEX_KG" Type="Decimal" Precision="4" Scale="1" />
+    <Property Name="fEX_SETS" Type="Int32" />
+    <Property Name="fEX_UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tISTXN">
+    <Key>
+      <PropertyRef Name="fID" />
+    </Key>
+    <Property Name="fID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fTXN_DATE" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+    <Property Name="fTXN_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="fTXN_DESC" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="fTXN_AMT" Type="Decimal" Precision="6" Scale="1" />
+    <Property Name="fTXN_OPTION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="fTXN_UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tMember">
+    <Key>
+      <PropertyRef Name="fID" />
+    </Key>
+    <Property Name="fID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fMem_UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fMem_Pwd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fMem_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fMem_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fMem_Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="fMem_Birthday" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+  </EntityType>
+  <EntityContainer Name="dbDATABASEEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tExercise" EntityType="Self.tExercise" />
+    <EntitySet Name="tISTXN" EntityType="Self.tISTXN" />
+    <EntitySet Name="tMember" EntityType="Self.tMember" />
+  </EntityContainer>
+</Schema>

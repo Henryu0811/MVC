@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="dbDATABASEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tExercise">
+          <Key>
+            <PropertyRef Name="fID" />
+          </Key>
+          <Property Name="fID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fEX_DATE" Type="char" MaxLength="8" />
+          <Property Name="fEX_TYPE" Type="varchar" MaxLength="10" />
+          <Property Name="fEX_MUSCLE" Type="varchar" MaxLength="50" />
+          <Property Name="fEX_METHOD" Type="varchar" MaxLength="50" />
+          <Property Name="fEX_TIMES" Type="int" />
+          <Property Name="fEX_KG" Type="decimal" Precision="4" Scale="1" />
+          <Property Name="fEX_SETS" Type="int" />
+          <Property Name="fEX_UserID" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tISTXN">
+          <Key>
+            <PropertyRef Name="fID" />
+          </Key>
+          <Property Name="fID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fTXN_DATE" Type="char" MaxLength="8" />
+          <Property Name="fTXN_TYPE" Type="varchar" MaxLength="10" />
+          <Property Name="fTXN_DESC" Type="varchar" MaxLength="100" />
+          <Property Name="fTXN_AMT" Type="decimal" Precision="6" Scale="1" />
+          <Property Name="fTXN_OPTION" Type="varchar" MaxLength="10" />
+          <Property Name="fTXN_UserID" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tMember">
+          <Key>
+            <PropertyRef Name="fID" />
+          </Key>
+          <Property Name="fID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fMem_UserID" Type="nvarchar" MaxLength="50" />
+          <Property Name="fMem_Pwd" Type="nvarchar" MaxLength="50" />
+          <Property Name="fMem_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="fMem_Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="fMem_Gender" Type="nvarchar" MaxLength="10" />
+          <Property Name="fMem_Birthday" Type="char" MaxLength="8" />
+        </EntityType>
+        <EntityContainer Name="dbDATABASEModelStoreContainer">
+          <EntitySet Name="tExercise" EntityType="Self.tExercise" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tISTXN" EntityType="Self.tISTXN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tMember" EntityType="Self.tMember" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbDATABASEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tExercise">
+          <Key>
+            <PropertyRef Name="fID" />
+          </Key>
+          <Property Name="fID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fEX_DATE" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="fEX_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="fEX_MUSCLE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fEX_METHOD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fEX_TIMES" Type="Int32" />
+          <Property Name="fEX_KG" Type="Decimal" Precision="4" Scale="1" />
+          <Property Name="fEX_SETS" Type="Int32" />
+          <Property Name="fEX_UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tISTXN">
+          <Key>
+            <PropertyRef Name="fID" />
+          </Key>
+          <Property Name="fID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fTXN_DATE" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="fTXN_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="fTXN_DESC" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="fTXN_AMT" Type="Decimal" Precision="6" Scale="1" />
+          <Property Name="fTXN_OPTION" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="fTXN_UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tMember">
+          <Key>
+            <PropertyRef Name="fID" />
+          </Key>
+          <Property Name="fID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fMem_UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="fMem_Pwd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="fMem_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="fMem_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="fMem_Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="fMem_Birthday" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="dbDATABASEEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tExercise" EntityType="Self.tExercise" />
+          <EntitySet Name="tISTXN" EntityType="Self.tISTXN" />
+          <EntitySet Name="tMember" EntityType="Self.tMember" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbDATABASEModelStoreContainer" CdmEntityContainer="dbDATABASEEntities">
+          <EntitySetMapping Name="tExercise">
+            <EntityTypeMapping TypeName="dbDATABASEModel.tExercise">
+              <MappingFragment StoreEntitySet="tExercise">
+                <ScalarProperty Name="fID" ColumnName="fID" />
+                <ScalarProperty Name="fEX_DATE" ColumnName="fEX_DATE" />
+                <ScalarProperty Name="fEX_TYPE" ColumnName="fEX_TYPE" />
+                <ScalarProperty Name="fEX_MUSCLE" ColumnName="fEX_MUSCLE" />
+                <ScalarProperty Name="fEX_METHOD" ColumnName="fEX_METHOD" />
+                <ScalarProperty Name="fEX_TIMES" ColumnName="fEX_TIMES" />
+                <ScalarProperty Name="fEX_KG" ColumnName="fEX_KG" />
+                <ScalarProperty Name="fEX_SETS" ColumnName="fEX_SETS" />
+                <ScalarProperty Name="fEX_UserID" ColumnName="fEX_UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tISTXN">
+            <EntityTypeMapping TypeName="dbDATABASEModel.tISTXN">
+              <MappingFragment StoreEntitySet="tISTXN">
+                <ScalarProperty Name="fID" ColumnName="fID" />
+                <ScalarProperty Name="fTXN_DATE" ColumnName="fTXN_DATE" />
+                <ScalarProperty Name="fTXN_TYPE" ColumnName="fTXN_TYPE" />
+                <ScalarProperty Name="fTXN_DESC" ColumnName="fTXN_DESC" />
+                <ScalarProperty Name="fTXN_AMT" ColumnName="fTXN_AMT" />
+                <ScalarProperty Name="fTXN_OPTION" ColumnName="fTXN_OPTION" />
+                <ScalarProperty Name="fTXN_UserID" ColumnName="fTXN_UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tMember">
+            <EntityTypeMapping TypeName="dbDATABASEModel.tMember">
+              <MappingFragment StoreEntitySet="tMember">
+                <ScalarProperty Name="fID" ColumnName="fID" />
+                <ScalarProperty Name="fMem_UserID" ColumnName="fMem_UserID" />
+                <ScalarProperty Name="fMem_Pwd" ColumnName="fMem_Pwd" />
+                <ScalarProperty Name="fMem_Name" ColumnName="fMem_Name" />
+                <ScalarProperty Name="fMem_Email" ColumnName="fMem_Email" />
+                <ScalarProperty Name="fMem_Gender" ColumnName="fMem_Gender" />
+                <ScalarProperty Name="fMem_Birthday" ColumnName="fMem_Birthday" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

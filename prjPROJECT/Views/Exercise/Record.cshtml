@@ -1,0 +1,452 @@
+﻿@model IEnumerable<prjPROJECT.Models.tExercise>
+
+@{
+    ViewBag.Title = "Record";
+    Layout = "~/Views/Shared/_LayoutMember.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+
+<br />
+
+<h2>健身紀錄</h2>
+
+<br />
+
+<form id="dateFilterForm" method="post">
+    開始日期: <input type="date" name="startDate" id="startDate">
+    結束日期: <input type="date" name="endDate" id="endDate">
+    <button type="submit">搜尋</button>
+</form>
+
+<br />
+
+<!-- data-bs-toggle="modal" data-bs-target="#createModal" 是 Bootstrap 的 modal 相關的屬性，當此按鈕被點擊時，它會觸發顯示 id 為 createModal 的 modal -->
+<button type="submit" class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#createModal" id="createButton">
+    新增資料
+</button>
+<button type="submit" class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#editModal" id="editButton" disabled>
+    修改資料
+</button>
+<button type="submit" class="btn btn-blue" data-bs-toggle="modal" data-bs-target="#deleteModal" id="deleteButton" disabled>
+    刪除資料
+</button>
+
+
+
+<script>
+
+    // 存儲當前選擇的行的特定 ID
+    var selectesFID = null;
+
+
+    // 確保當 HTML 文檔完全加載完成後，內部的函數才開始執行。
+    // 為了確保所有的 DOM 元素都已經存在，因此 jQuery 腳本不會嘗試去修改還不存在的元素
+    $(document).ready(function () {
+
+        // 根據是否有選擇行來啟用或禁用按鈕
+        function updateButtonState() {
+            //debugger;
+
+            // 使用 jQuery 選擇器選擇 #exerciseTable 內所有有 selected 這個 class 的 tr 元素
+            // .length 獲取了這些選擇的行的數量
+            // > 0 判斷是否有至少一行被選擇，然後將這個 boolean 值給 isSelected 變數
+            var isSelected = $("#exerciseTable tr.selected").length > 0;
+
+            if (isSelected) {
+                // 移除 disabled 屬性，使 button 可以點擊
+                $("#editButton").removeAttr('disabled');
+                $("#deleteButton").removeAttr('disabled');
+            } else {
+                // 設置 disabled 屬性，使 button 不可點擊
+                $("#editButton").attr('disabled', 'disabled');
+                $("#deleteButton").attr('disabled', 'disabled');
+            }
+        }
+
+
+        // 為 #exerciseTable 中的所有 tr 添加 click 事件處理程序，點擊任一行時，會執行內部的匿名函數
+        $("#exerciseTable tr").click(function () {
+
+            // selectedFID 變數 = 從被點擊的行中查找第 8 個 td 元素(也就是 fID 主 KEY)，去除前後空白
+            selectedFID = $(this).find('td').eq(7).text().trim();
+
+            // 如果點選的那行原本已經被選中
+            if ($(this).hasClass("selected")) {
+
+                // 移除選中的 class 並重置背景顏色
+                $(this).removeClass("selected");
+                $(this).css("background-color", "");
+                $(this).find('td').css("background-color", "");
+            } else {
+                // 如果點選的那行原本沒有被選中
+
+                // 移除其他行的選中 class 和背景顏色
+                $("table tr").removeClass("selected");
+                $("table tr").css("background-color", "");
+                $("table tr").find('td').css("background-color", "");
+
+                // 為被點擊的行添加選中 class 並將背景顏色設為粉紅色
+                $(this).addClass("selected");
+                $(this).css("background-color", "pink");
+                $(this).find('td').css("background-color", "pink");
+
+            }
+
+
+
+            // 獲取被點擊的 <tr> 中的 <td> 的值
+            var fEX_DATE = $(this).find('td').eq(0).text().trim();
+            var fEX_TYPE = $(this).find('td').eq(1).text().trim();
+            var fEX_MUSCLE = $(this).find('td').eq(2).text().trim();
+            var fEX_METHOD = $(this).find('td').eq(3).text().trim();
+            var fEX_TIMES = $(this).find('td').eq(4).text().trim();
+            var fEX_KG = $(this).find('td').eq(5).text().trim();
+            var fEX_SETS = $(this).find('td').eq(6).text().trim();
+            var fEX_UserID = $(this).find('td').eq(7).text().trim();
+            var fID = $(this).find('td').eq(8).text().trim();
+
+            // 設置 editModal 中的 <input> 的值
+            $('#edit_fEX_DATE').val(fEX_DATE);
+            $('#edit_fEX_TYPE').val(fEX_TYPE);
+            $('#edit_fEX_MUSCLE').val(fEX_MUSCLE);
+            $('#edit_fEX_METHOD').val(fEX_METHOD);
+            $('#edit_fEX_TIMES').val(fEX_TIMES);
+            $('#edit_fEX_KG').val(fEX_KG);
+            $('#edit_fEX_SETS').val(fEX_SETS);
+            $('#edit_fEX_UserID').val(fEX_UserID);
+            $('#edit_fID').val(fID);
+
+            //嘎嘎寫的
+            // 將被點擊行的 fID 設置到 deleteModal 中的對應 input 元素的 value 屬性中
+            $('#delete_fID').val(fID);
+
+            updateButtonState();
+        });
+
+
+        // 函數 clearModalData 使用 jQuery 的 find 找 modal 中所有 input 元素，使用 val('') 將 input 元素的值清空
+        function clearModalData(modalSelector) {
+            $(modalSelector).find('input').val('');
+        }
+
+        // hidden.bs.modal，該事件會在模態對話框完全隱藏後觸發
+        // this 將當下隱藏的 modal 做為 clearModalData 函數的參數
+        $('#createModal, #editModal, #deleteModal').on('hidden.bs.modal', function () {
+            clearModalData(this);
+        });
+
+
+        // 新增 - 新增紀錄按鈕_點擊事件
+        // 當 #createExerciseBtn 被點擊時， 內部的函數將被執行
+        $("#createExerciseBtn").click(function () {
+            // 將 #createExerciseForm 表單內的元素，使用 .serialize() 序列化為 URL 編碼的字串，以便於 Ajax 請求
+            var formData = $("#createExerciseForm").serialize();
+            // 開始一個 Ajax 請求，Ajax 可以在不重新加載頁面的情況下請求伺服器上的數據
+            $.ajax({
+                type: "POST", // 請求的類型
+                url: "/Exercise/Create", // 請求的 URL，嘗試連接到 /Exercise/Create
+                data: formData,
+                // 當 Ajax 請求成功
+                // 且邏輯正確時會回傳使 data = "success" : true
+                // 若邏輯錯誤時回傳 使 data = "success" : false, "errorMessage" : "錯誤訊息..."，像是註冊時 email 已經使用過、提交的資料不完整或格式不正確
+                success: function (data) {
+                    // if (true or false)
+                    if (data.success) {
+                        // 重新加載當前頁面
+                        location.reload();
+                    } else {
+                        // 彈出帶有錯誤訊息的視窗
+                        alert(data.errorMessage);
+                    }
+                },
+                // 當 Ajax 請求失敗
+                // jqXHR：是一個對 XMLHttpRequest 物件的封裝，包含了這次請求的所有信息和伺服器的響應
+                // textStatus：是一個描述請求結果的字符串，例如 "timeout", "error", "abort", 和 "parsererror"
+                // errorThrown：是一個可選的、描述 HTTP 錯誤的字符串
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("An error occurred: " + errorThrown);
+                }
+            });
+            // Ajax 請求發送後， modal 會自動關閉
+            $("#createModal").modal("hide");
+        });
+
+        // 修改 - 儲存紀錄按鈕點擊事件
+        $("#saveEditExerciseBtn").click(function () {
+
+            var formData = $("#editExerciseForm").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "/Exercise/Edit",
+                data: formData,
+
+                success: function (data) {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.errorMessage);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("An error occurred: " + errorThrown);
+                }
+            });
+            $("#editModal").modal("hide");
+        });
+
+        // 刪除 - 刪除紀錄按鈕點擊事件
+        // 相較於上面新增、修改，此為較簡潔的寫法，但上面的寫法較為靈活
+        $("#deleteExerciseBtn").click(function () {
+            //debugger;
+            $.post("/Exercise/Delete", $("#delete_fID").serialize())
+                .done(function (data) {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert(data.errorMessage);
+                    }
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    alert("An error occurred: " + errorThrown);
+                });
+
+            $("#deleteModal").modal("hide");
+        });
+
+
+    });
+
+</script>
+
+
+<!-- 新增 Modal -->
+<!-- modal 的外層容器 -->
+<!-- class="modal fade"：modal 指定該元素是一個modal，fade 確保 modal有淡入淡出的效果 -->
+<!-- aria-hidden="true" 設這個 modal初始狀態是隱藏的 -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <!-- modal 的主要容器，包含了模態框的內容 -->
+    <div class="modal-dialog">
+        <!-- 這個容器裝載了 modal 的實際內容，如標題、主體和底部按鈕 -->
+        <div class="modal-content">
+            <!-- modal 的標題部分 -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">新增紀錄</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createExerciseForm">
+                    <div class="form-group">
+                        <label for="create_fEX_DATE">日期</label>
+                        <input type="text" class="form-control" id="create_fEX_DATE" name="fEX_DATE" />
+                    </div>
+                    <div class="form-group">
+                        <label for="create_fEX_TYPE">項目</label>
+                        <input type="text" class="form-control" id="create_fEX_TYPE" name="fEX_TYPE" />
+                    </div>
+                    <div class="form-group">
+                        <label for="create_fEX_MUSCLE">肌群</label>
+                        <input type="text" class="form-control" id="create_fEX_MUSCLE" name="fEX_MUSCLE" />
+                    </div>
+                    <div class="form-group">
+                        <label for="create_fEX_METHOD">動作</label>
+                        <input type="text" class="form-control" id="create_fEX_METHOD" name="fEX_METHOD" />
+                    </div>
+                    <div class="form-group">
+                        <label for="create_fEX_TIMES">次數</label>
+                        <input type="text" class="form-control" id="create_fEX_TIMES" name="fEX_TIMES" />
+                    </div>
+                    <div class="form-group">
+                        <label for="create_fEX_KG">公斤</label>
+                        <input type="text" class="form-control" id="create_fEX_KG" name="fEX_KG" />
+                    </div>
+                    <div class="form-group">
+                        <label for="create_fEX_SETS">組數</label>
+                        <input type="text" class="form-control" id="create_fEX_SETS" name="fEX_SETS" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="createExerciseBtn">新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 修改 Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">修改資料</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editExerciseForm">
+                    <div class="form-group">
+                        <label for="edit_fEX_DATE" class="form-label">日期</label>
+                        <input type="text" class="form-control" id="edit_fEX_DATE" name="fEX_DATE">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_fEX_TYPE" class="form-label">項目</label>
+                        <input type="text" class="form-control" id="edit_fEX_TYPE" name="fEX_TYPE">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_fEX_MUSCLE" class="form-label">肌群</label>
+                        <input type="text" class="form-control" id="edit_fEX_MUSCLE" name="fEX_MUSCLE">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_fEX_METHOD" class="form-label">動作</label>
+                        <input type="text" class="form-control" id="edit_fEX_METHOD" name="fEX_METHOD">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_fEX_TIMES" class="form-label">次數</label>
+                        <input type="text" class="form-control" id="edit_fEX_TIMES" name="fEX_TIMES">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_fEX_KG" class="form-label">公斤</label>
+                        <input type="text" class="form-control" id="edit_fEX_KG" name="fEX_KG">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_fEX_SETS" class="form-label">組數</label>
+                        <input type="text" class="form-control" id="edit_fEX_SETS" name="fEX_SETS">
+                    </div>
+                    <!-- 系統用，因此可以較為簡略 -->
+                    <input type="text" class="form-control" id="edit_fEX_UserID" name="fEX_UserID" style="display:none;">
+                    <input type="text" class="form-control" id="edit_fID" name="fID" style="display:none;">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="saveEditExerciseBtn">儲存</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 刪除 Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">刪除紀錄</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteExerciseForm">
+                    <h3>確認刪除？</h3>
+                    <p>是否確定要刪除資料？</p>
+                </form>
+            </div>
+            <input type="text" class="form-control" id="delete_fID" name="fID" style="display:none;">
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="deleteExerciseBtn">確認</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<table class="table" id="exerciseTable">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.fEX_DATE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fEX_TYPE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fEX_MUSCLE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fEX_METHOD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fEX_TIMES)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fEX_KG)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fEX_SETS)
+        </th>
+        <th style="display:none;">
+            @Html.DisplayNameFor(model => model.fEX_UserID)
+        </th>
+        <th style="display:none;">
+            @Html.DisplayNameFor(model => model.fID)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.fEX_DATE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fEX_TYPE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fEX_MUSCLE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fEX_METHOD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fEX_TIMES)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fEX_KG)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fEX_SETS)
+            </td>
+            <td style="display:none;">
+                @Html.DisplayFor(modelItem => item.fEX_UserID)
+            </td>
+            <td style="display:none;">
+                @Html.DisplayFor(modelItem => item.fID)
+            </td>
+        </tr>
+    }
+</table>
+
+<style>
+    #exerciseTable th, #exerciseTable td {
+        text-align: center;
+    }
+
+    /* 自定義藍色按鈕樣式 */
+    .btn-blue {
+        color: #fff;
+        background-color: #57d1f2;
+        border-color: #57d1f2;
+    }
+
+    /* 定義粉紅色按鈕在滑鼠滑過時的樣式 */
+    .btn-blue:hover {
+        color: #fff;
+        background-color: #4fcdf0;
+        border-color: #4fcdf0;
+    }
+
+    .selected {
+        background-color: pink !important; /* 使用 !important 確保這個樣式不會被其他樣式覆蓋 */
+    }
+
+    th {
+        pointer-events: none;
+    }
+</style>
+
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
